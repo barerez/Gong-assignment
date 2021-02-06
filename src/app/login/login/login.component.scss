@@ -1,0 +1,32 @@
+.header {
+  font-size: xx-large;
+  margin: 40px 0 0 25%;
+}
+
+.error-msg {
+  font-size: small;
+  color: red;
+}
+
+.login-form {
+  max-width: 330px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  margin-top: 50px;
+
+  padding: 15px 15px 0 15px;
+  border: solid 1px darkgrey;
+}
+
+.form-item {
+  display: flex;
+
+  label {
+    min-width: 110px;
+  }
+
+  input {
+    max-width: 200px;
+  }
+}
