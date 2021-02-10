@@ -6,6 +6,8 @@
 .user-photo {
   border: solid 2px purple;
   border-radius: 50%;
+  height: 60px;
+  width: 60px;
   padding: 5px;
 }
 
@@ -23,5 +25,4 @@
   width: 40px;
   margin-left: 10px;
   align-items: center;
-  cursor: pointer;
 }

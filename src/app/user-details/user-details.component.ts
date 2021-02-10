@@ -9,7 +9,8 @@ import {FullName, User} from '../models/models';
 export class UserDetailsComponent implements OnInit {
 
   @Input() user: User;
-  @Output('delete') deleteEmitter: EventEmitter<number> = new EventEmitter();
+  @Input() showEmployees: boolean;
+  @Output() delete: EventEmitter<number> = new EventEmitter();
   actionsVisible = false;
   editMode: boolean;
 
@@ -35,10 +36,22 @@ export class UserDetailsComponent implements OnInit {
   }
 
   nameChanged(name: FullName) {
-    //save name
+    // save name
   }
 
-  delete() {
-    this.deleteEmitter.emit(this.user.id);
+  deleteDisplayedUser() {
+    this.delete.emit(this.user.id);
+  }
+
+  deleteChildUser(id) {
+    this.delete.emit(id);
+  }
+
+  toggleExpandEmployees() {
+    this.showEmployees = !this.showEmployees;
+  }
+
+  imgLoadFailed(user: User) {
+    user.photo = null;
   }
 }

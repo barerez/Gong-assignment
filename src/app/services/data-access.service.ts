@@ -1,33 +1,33 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {forkJoin, Observable} from 'rxjs';
-import {map, tap} from 'rxjs/operators';
+import {BehaviorSubject, forkJoin, Observable} from 'rxjs';
+import {map} from 'rxjs/operators';
 import {User} from '../models/models';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DataAccessService {
+  private static BASE_URL = 'https://gongfetest.firebaseio.com';
+  private usersSubject: BehaviorSubject<User[]> = new BehaviorSubject<User[]>([]);
+  public readonly allUsers = this.usersSubject.asObservable();
+
+  private serverDataObservable: Observable<User[]>;
 
   constructor(private http: HttpClient) {
-    this.usersObservable = this.http.get(`${DataAccessService.BASE_URL}/users/.json`).pipe(
-      tap((users: User[]) => this.users = users)
-    );
-    this.usersObservable.subscribe();
-  }
-  private static BASE_URL = 'https://gongfetest.firebaseio.com';
-  private hierarchy;
-  private usersObservable: Observable<User[]>;
-  users: User[];
-
-  public getUserId(secret: string): Observable<any> {
-    return forkJoin(this.usersObservable, this.http.get(`${DataAccessService.BASE_URL}/secrets/${secret}.json`)).pipe(
-      map(res => res[1])
-    );
+    this.serverDataObservable = this.http.get<User[]>(`${DataAccessService.BASE_URL}/users/.json`);
+    this.serverDataObservable
+      .subscribe((users: User[]) => this.usersSubject.next(users));
   }
 
   public getUserIndexById(id: number) {
-    return this.users.map(user => user.id).indexOf(id);
+    return this.usersSubject.value.map(user => user && user.id).indexOf(id);
+  }
+
+  public getUserId(secret: string): Observable<any> {
+    return forkJoin(this.serverDataObservable, this.http.get(`${DataAccessService.BASE_URL}/secrets/${secret}.json`)).pipe(
+      map(res => res[1])
+    );
   }
 
   public getUserField(index: number, field: string) {
@@ -47,5 +47,9 @@ export class DataAccessService {
   deleteUser(userId: number) {
     const index = this.getUserIndexById(userId);
     return this.http.delete(`${DataAccessService.BASE_URL}/users/${index}.json`);
+  }
+
+  findUserById(userId: number) {
+    return this.usersSubject.value.filter(user => !!user).find(user => user.id === userId);
   }
 }

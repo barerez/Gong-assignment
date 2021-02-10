@@ -42,7 +42,7 @@ export class AuthenticationService {
     return ret;
   }
 
-  private encode(email, password): string {
+  private static encode(email, password): string {
     const e = AuthenticationService.make32(email);
     const p = AuthenticationService.make32(password);
     let code = '';
@@ -57,10 +57,10 @@ export class AuthenticationService {
   }
 
   login(userName: string, password: string) {
-    const secret = this.encode(userName, password);
+    const secret = AuthenticationService.encode(userName, password);
     return this.dataService.getUserId(secret).pipe(
       map(userId => {
-        const foundUser = this.dataService.users.find(user => user.id === userId);
+        const foundUser = this.dataService.findUserById(userId);
         if (foundUser) {
           this.connectedUser = foundUser;
           return foundUser;

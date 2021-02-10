@@ -1,33 +1,13 @@
 $top-bar-height: 50px;
 
-@mixin dark-theme-font {
+.dark-theme-font {
   font-size: large;
   color: whitesmoke;
 }
 
 .top-bar {
-  position: fixed;
   left: 0;
   top: 0;
-  z-index: 100;
-  display: flex;
   background-color: black;
   min-height: $top-bar-height;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.title {
-  @include dark-theme-font;
-}
-
-.main-panel {
-  margin-top: $top-bar-height;
-  padding: 15px;
-  height: 100%;
-}
-
-.user-name {
-  padding-right: 10px;
-  @include dark-theme-font;
 }

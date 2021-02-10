@@ -16,6 +16,7 @@ export class LoginComponent implements OnInit {
   submitted = false;
 
   @ViewChild('formContent') reportContent: ElementRef;
+  loginFailed = false;
 
 
   constructor(private formBuilder: FormBuilder,
@@ -41,16 +42,17 @@ export class LoginComponent implements OnInit {
     if (this.form.invalid) {
       return;
     }
+    this.loginFailed = false;
 
     this.loading = true;
     this.authenticationService.login(this.fields.email.value, this.fields.password.value)
       .subscribe(
-        data => {
+        () => {
           this.router.navigate([this.returnUrl]);
         },
         error => {
-          alert('error');
-          this.loading = false;
+          console.log(error);
+          this.loginFailed = true;
         });
   }
 

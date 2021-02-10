@@ -6,6 +6,7 @@ export interface User {
   password: string;
   photo?: string;
   index: number;
+  employees?: any[];
   managerId?: number;
 }
 
