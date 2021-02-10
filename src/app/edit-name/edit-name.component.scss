@@ -1,0 +1,12 @@
+:host {
+  border: solid 1px darkgray;
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+  margin: 10px;
+}
+
+.footer {
+  display: flex;
+  justify-content: flex-end;
+}

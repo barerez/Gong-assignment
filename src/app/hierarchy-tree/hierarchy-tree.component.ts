@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {User} from '../models/models';
 import {AuthenticationService} from '../services/authentication.service';
+import {DataAccessService} from '../services/data-access.service';
 
 @Component({
   selector: 'app-hierarchy-tree',
@@ -10,7 +11,7 @@ import {AuthenticationService} from '../services/authentication.service';
 export class HierarchyTreeComponent implements OnInit {
   user: User;
 
-  constructor(private authService: AuthenticationService) { }
+  constructor(private authService: AuthenticationService, private dataService: DataAccessService) { }
 
   ngOnInit() {
     this.user = this.authService.connectedUser;
@@ -18,5 +19,9 @@ export class HierarchyTreeComponent implements OnInit {
 
   logout() {
     this.authService.logout();
+  }
+
+  deleteUser(userId: number) {
+    this.dataService.deleteUser(userId).subscribe();
   }
 }

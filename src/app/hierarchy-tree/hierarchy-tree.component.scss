@@ -21,11 +21,6 @@ $top-bar-height: 50px;
   @include dark-theme-font;
 }
 
-.connected-user {
-  display: flex;
-  align-items: center;
-}
-
 .main-panel {
   margin-top: $top-bar-height;
   padding: 15px;

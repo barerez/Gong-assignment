@@ -8,12 +8,16 @@ import {HierarchyTreeComponent} from './hierarchy-tree/hierarchy-tree.component'
 import {ReactiveFormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
 import {AuthenticationGuard} from './login/authentication.guard';
+import { UserDetailsComponent } from './user-details/user-details.component';
+import { EditNameComponent } from './edit-name/edit-name.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    HierarchyTreeComponent
+    HierarchyTreeComponent,
+    UserDetailsComponent,
+    EditNameComponent
   ],
   imports: [
     BrowserModule,

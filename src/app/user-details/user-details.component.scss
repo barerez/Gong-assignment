@@ -1,0 +1,27 @@
+:host {
+  display: flex;
+  flex-direction: column;
+}
+
+.user-photo {
+  border: solid 2px purple;
+  border-radius: 50%;
+  padding: 5px;
+}
+
+.name {
+  font-size: large;
+  font-weight: bold;
+}
+.email {
+  margin-left: 10px;
+}
+
+.actions {
+  display: flex;
+  justify-content: space-between;
+  width: 40px;
+  margin-left: 10px;
+  align-items: center;
+  cursor: pointer;
+}
