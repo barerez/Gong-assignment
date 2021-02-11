@@ -1,23 +1,32 @@
 <div class="d-flex flex-column mt-4">
-  <div class="d-flex align-items-center">
+  <div class="d-flex align-items-center" [ngClass]="{'ml-4': user.employees?.length <= 0}">
+    <ng-container *ngIf="user.employees?.length > 0">
       <ng-container *ngIf="showEmployees; then plus else minus"></ng-container>
       <ng-template #plus>
-        <svg [ngClass]="'pointer'" (click)="toggleExpandEmployees()" xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-dash-square" viewBox="0 0 16 16">
-          <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+        <svg [ngClass]="'pointer'" (click)="toggleExpandEmployees()" xmlns="http://www.w3.org/2000/svg" width="32"
+             height="32" fill="currentColor" class="bi bi-dash-square" viewBox="0 0 16 16">
+          <path
+            d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
           <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z"/>
         </svg>
       </ng-template>
       <ng-template #minus>
-        <svg [ngClass]="'pointer'" (click)="toggleExpandEmployees()" xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-plus-square" viewBox="0 0 16 16">
-          <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
-          <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+        <svg [ngClass]="'pointer'" (click)="toggleExpandEmployees()" xmlns="http://www.w3.org/2000/svg" width="32"
+             height="32" fill="currentColor" class="bi bi-plus-square" viewBox="0 0 16 16">
+          <path
+            d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+          <path
+            d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
         </svg>
       </ng-template>
-    <div class="d-flex align-items-center pl-2" (mouseenter)="showActions()" (mouseleave)="hideActions()">
-      <img *ngIf="user.photo" class="user-photo d-flex justify-content-center align-items-center" (error)="imgLoadFailed(user)" [src]="user.photo" [alt]="user.firstName">
-      <div *ngIf="!user.photo" class="user-photo d-flex justify-content-center align-items-center">{{user.firstName[0] + user.lastName[0]}}</div>
+    </ng-container>
+    <div class="d-flex align-items-center pl-2" (mouseenter)="showActions(true)" (mouseleave)="showActions(false)">
+      <img *ngIf="user.photo" class="user-photo d-flex justify-content-center align-items-center"
+           (error)="imgLoadFailed(user)" [src]="user.photo" [alt]="user.firstName">
+      <div *ngIf="!user.photo"
+           class="user-photo d-flex justify-content-center align-items-center">{{user.firstName[0] + user.lastName[0]}}</div>
       <span class="name ml-2">{{user.firstName}} {{user.lastName}}</span> <span class="email">{{user.email}}</span>
-      <div class="actions pointer" *ngIf="actionsVisible">
+      <div class="d-flex justify-content-between ml-2 actions pointer" *ngIf="actionsVisible">
         <svg (click)="editClicked()" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
              class="bi bi-pencil" viewBox="0 0 16 16">
           <path
@@ -34,11 +43,11 @@
       </div>
     </div>
   </div>
-  <app-edit-name *ngIf="editMode" class="pr-2" [firstName]="user.firstName" [lastName]="user.lastName"
-                 (cancel)="cancelEdit()" (nameChanged)="nameChanged($event)">
+  <app-edit-name *ngIf="editMode" class="pr-2" [name]="user"
+                 (canceled)="cancelEdit()" (changed)="nameChanged($event)">
   </app-edit-name>
   <div class="d-flex flex-column ml-5" *ngIf="showEmployees">
     <app-user-details *ngFor="let child of user.employees" [user]="child"
-                      (delete)="deleteChildUser(child.id)"></app-user-details>
+                      (delete)="deleteChildUser(child.id)" (changed)="nameChanged($event)"></app-user-details>
   </div>
 </div>

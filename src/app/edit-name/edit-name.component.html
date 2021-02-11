@@ -1,11 +1,11 @@
 <div class="d-flex">
   <span class="flex-grow-1">
     <label for="firstName">First Name:</label>
-    <input #first type="text" id="firstName" maxLength="50"/>
+    <input #first type="text" id="firstName" maxLength="50" [ngModel]="name.firstName"/>
   </span>
   <span class="flex-grow-1">
     <label for="lastName">Last Name:</label>
-    <input #last type="text" id="lastName" maxlength="50"/>
+    <input #last type="text" id="lastName" maxlength="50" [ngModel]="name.lastName"/>
   </span>
 </div>
 <div class="d-flex justify-content-end">

@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {FullName, User} from '../models/models';
+import {UserFullName, User} from '../models/models';
 
 @Component({
   selector: 'app-user-details',
@@ -11,6 +11,7 @@ export class UserDetailsComponent implements OnInit {
   @Input() user: User;
   @Input() showEmployees: boolean;
   @Output() delete: EventEmitter<number> = new EventEmitter();
+  @Output() changed: EventEmitter<UserFullName> = new EventEmitter();
   actionsVisible = false;
   editMode: boolean;
 
@@ -19,12 +20,8 @@ export class UserDetailsComponent implements OnInit {
   ngOnInit() {
   }
 
-  showActions() {
-    this.actionsVisible = true;
-  }
-
-  hideActions() {
-    this.actionsVisible = false;
+  showActions(show: boolean) {
+    this.actionsVisible = show;
   }
 
   editClicked() {
@@ -35,8 +32,9 @@ export class UserDetailsComponent implements OnInit {
     this.editMode = false;
   }
 
-  nameChanged(name: FullName) {
-    // save name
+  nameChanged(name: UserFullName) {
+    this.editMode = false;
+    this.changed.emit(name);
   }
 
   deleteDisplayedUser() {

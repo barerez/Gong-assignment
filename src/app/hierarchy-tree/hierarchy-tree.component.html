@@ -6,5 +6,5 @@
   </div>
 </div>
 <div class="mt-5 pl-4 h-100">
-  <app-user-details *ngFor="let curr of hierarchy" [user]="curr" (delete)="deleteUser(curr.id)"></app-user-details>
+  <app-user-details *ngFor="let curr of hierarchy" [user]="curr" (delete)="deleteUser(curr.id)" (changed)="nameChanged($event)"></app-user-details>
 </div>

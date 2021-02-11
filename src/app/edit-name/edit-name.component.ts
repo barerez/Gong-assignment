@@ -1,5 +1,5 @@
 import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
-import {FullName} from '../models/models';
+import {UserFullName} from '../models/models';
 
 @Component({
   selector: 'app-edit-name',
@@ -8,11 +8,10 @@ import {FullName} from '../models/models';
 })
 export class EditNameComponent implements OnInit {
 
-  @Input() firstName;
-  @Input() lastName;
+  @Input() name: UserFullName;
 
-  @Output('nameChanged') nameChanged: EventEmitter<FullName> = new EventEmitter();
-  @Output('cancel') cancelEmitter: EventEmitter<void> = new EventEmitter();
+  @Output() changed: EventEmitter<UserFullName> = new EventEmitter();
+  @Output() canceled: EventEmitter<void> = new EventEmitter();
 
   @ViewChild('first') firstNameEl: ElementRef;
   @ViewChild('last') lastNameEl: ElementRef;
@@ -23,11 +22,11 @@ export class EditNameComponent implements OnInit {
   }
 
   cancel() {
-    this.cancelEmitter.emit();
+    this.canceled.emit();
   }
 
   saveName() {
-    this.nameChanged.emit(new FullName(this.firstNameEl.nativeElement.value,
+    this.changed.emit(new UserFullName(this.name.id, this.firstNameEl.nativeElement.value,
       this.lastNameEl.nativeElement.value));
   }
 }

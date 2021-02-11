@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {BehaviorSubject, forkJoin, Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
-import {User} from '../models/models';
+import {User, UserFullName} from '../models/models';
 
 @Injectable({
   providedIn: 'root'
@@ -34,10 +34,34 @@ export class DataAccessService {
     this.http.get(`${DataAccessService.BASE_URL}/users/${index}/${field}.json`);
   }
 
-  public updateUser(index: number, fields: {key: string, value: string | number}) {
+  public updateUser(index: number, fields: {key: string, value: string | number}[]): Observable<any> {
     let headers = new HttpHeaders();
+    const body = {};
+    fields.forEach(field => body[field.key] = field.value);
     headers = headers.set('dataType', 'json').set('Content-Type', 'application/json');
-    this.http.patch(`${DataAccessService.BASE_URL}/users/${index}.json`, fields, {headers: headers});
+    return this.http.patch(`${DataAccessService.BASE_URL}/users/${index}.json`, body, {headers: headers});
+  }
+
+  public updateName(newName: UserFullName) {
+    const currUser = this.findUserById(newName.id);
+    if (!currUser) {
+      throw new Error('User Not Found');
+    }
+    const updateData = [];
+    if (currUser.firstName !== newName.firstName) {
+      updateData.push({key: 'firstName', value: newName.firstName});
+    }
+    if (currUser.lastName !== newName.lastName) {
+      updateData.push({key: 'lastName', value: newName.lastName});
+    }
+    if (updateData.length > 0) {
+      this.updateUser(this.getUserIndexById(newName.id), updateData)
+        .subscribe(() => {
+          currUser.firstName = newName.firstName;
+          currUser.lastName = newName.lastName;
+          this.usersSubject.next(this.usersSubject.value);
+        });
+    }
   }
 
   public deleteUserField(index: number, field: string) {
@@ -46,7 +70,11 @@ export class DataAccessService {
 
   deleteUser(userId: number) {
     const index = this.getUserIndexById(userId);
-    return this.http.delete(`${DataAccessService.BASE_URL}/users/${index}.json`);
+    return this.http.delete(`${DataAccessService.BASE_URL}/users/${index}.json`)
+      .subscribe(() => {
+        this.usersSubject.value[index] = null;
+        this.usersSubject.next(this.usersSubject.value);
+      });
   }
 
   findUserById(userId: number) {

@@ -5,7 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login/login.component';
 import {HierarchyTreeComponent} from './hierarchy-tree/hierarchy-tree.component';
-import {ReactiveFormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
 import {AuthenticationGuard} from './login/authentication.guard';
 import { UserDetailsComponent } from './user-details/user-details.component';
@@ -23,6 +23,7 @@ import { EditNameComponent } from './edit-name/edit-name.component';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
+    FormsModule,
     ReactiveFormsModule
   ],
   providers: [AuthenticationGuard],

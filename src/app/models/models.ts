@@ -10,11 +10,13 @@ export interface User {
   managerId?: number;
 }
 
-export class FullName {
+export class UserFullName {
+  id: number;
   firstName: string;
   lastName: string;
 
-  constructor(first: string, last: string) {
+  constructor(id: number, first: string, last: string) {
+    this.id = id;
     this.firstName = first;
     this.lastName = last;
   }
